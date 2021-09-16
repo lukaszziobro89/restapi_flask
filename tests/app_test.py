@@ -12,5 +12,3 @@ def client():
 def test_status(client):
     status_code = client.get('/student/luq').status_code
     assert status_code == 200
-
-

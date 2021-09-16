@@ -20,7 +20,6 @@ def create_app():
 
     app = Flask(__name__)
     api = Api(app)
-    app.secret_key = "jose"
 
     jwt = JWT(app, authenticate, identity)
 

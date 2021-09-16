@@ -1,3 +1,4 @@
+import sqlite3
 from flask_jwt import jwt_required
 from flask_restful import Resource, reqparse
 
@@ -10,10 +11,20 @@ class Item(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('price', type=float, required=True, help="The field cannot left blank!")
 
-    @jwt_required()
+    # @jwt_required()
     def get(self, name):
-        item = next(filter(lambda x: x['name'] == name, items), None)
-        return {'item': item}, 200 if item else 404
+        connection = sqlite3.connect('project_code/data.db')
+        cursor = connection.cursor()
+
+        query = "SELECT * FROM items where name = ?"
+        result = cursor.execute(query, (name,))
+        row = result.fetchone()
+        connection.close()
+
+        if row:
+            return {'item': {'name': row[0], 'price': row[1]}}
+        else:
+            return {'message': 'Item not found'}, 400
 
     @jwt_required()
     def post(self, name):
