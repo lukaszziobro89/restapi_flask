@@ -8,6 +8,8 @@ from project_code.item import Item, ItemList
 from project_code.security import identity, authenticate
 from project_code.student import Student
 
+from project_code.user import UserRegister
+
 
 def create_app():
     logging.basicConfig(
@@ -25,6 +27,7 @@ def create_app():
     api.add_resource(Student, "/student/<string:name>")
     api.add_resource(Item, "/item/<string:name>")
     api.add_resource(ItemList, "/items")
+    api.add_resource(UserRegister, "/register")
 
     return app
 
