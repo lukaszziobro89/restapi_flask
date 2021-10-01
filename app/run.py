@@ -4,11 +4,11 @@ from flask import Flask
 from flask_jwt import JWT
 from flask_restful import Api
 
-from project_code.resources.item import Item, ItemList
-from project_code.security import identity, authenticate
-from project_code.student import Student
+from resources.item import Item, ItemList
+from security import identity, authenticate
+from student import Student
 
-from project_code.resources.user import UserRegister
+from resources.user import UserRegister
 
 
 def create_app():

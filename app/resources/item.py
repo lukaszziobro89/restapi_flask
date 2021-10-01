@@ -12,7 +12,7 @@ class Item(Resource):
     def get(self, name):
         item = ItemModel.find_by_name(name)
         if item:
-            return item
+            return item.json()
         return {'message': 'Item not found'}, 404
 
     @jwt_required()
@@ -21,14 +21,15 @@ class Item(Resource):
             return {"message": f"An item {name} already exists."}, 400
 
         data = Item.parser.parse_args()
-        item = {'name': name, 'price': data['price']}
+
+        item = ItemModel(name, data['price'])
 
         try:
-            Item.insert(item)
+            item.insert()
         except:
             return {"message": "An error occur when inserting"}, 500
 
-        return item, 201
+        return item.json(), 201
 
     @jwt_required()
     def delete(self, name):
@@ -36,7 +37,7 @@ class Item(Resource):
         if not item:
             return {"message": f"Item {name} does not exists"}
         else:
-            connection = sqlite3.connect('project_code/data.db')
+            connection = sqlite3.connect('app/data.db')
             cursor = connection.cursor()
 
             query = "DELETE FROM items WHERE name = ?"
@@ -52,24 +53,24 @@ class Item(Resource):
         data = Item.parser.parse_args()
 
         item = ItemModel.find_by_name(name)
-        updated_item = {'name': name, 'price': data['price']}
+        updated_item = ItemModel(name, data['price'])
 
         if item is None:
             try:
-                ItemModel.insert(updated_item)
+                updated_item.insert()
             except:
                 return {"message": "An error occurred when inserting an item"}, 500
         else:
             try:
-                ItemModel.update(updated_item)
+                updated_item.update()
             except:
                 return {"message": "An error occurred when update an item"}, 500
-        return updated_item
+        return updated_item.json()
 
 
 class ItemList(Resource):
     def get(self):
-        connection = sqlite3.connect('project_code/data.db')
+        connection = sqlite3.connect('app/data.db')
         cursor = connection.cursor()
 
         query = "SELECT * FROM items"

@@ -9,7 +9,7 @@ class UserModel:
 
     @classmethod
     def find_by_username(cls, username):
-        connection = sqlite3.connect('project_code/data.db')
+        connection = sqlite3.connect('app/data.db')
         cursor = connection.cursor()
 
         query = "SELECT * " \
@@ -27,7 +27,7 @@ class UserModel:
 
     @classmethod
     def find_by_id(cls, _id):
-        connection = sqlite3.connect('project_code/data.db')
+        connection = sqlite3.connect('app/data.db')
         cursor = connection.cursor()
 
         query = "SELECT * " \

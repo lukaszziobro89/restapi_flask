@@ -1,6 +1,6 @@
 import sqlite3
 from flask_restful import Resource, reqparse
-from project_code.models.user import UserModel
+from models.user import UserModel
 
 
 class UserRegister(Resource):
@@ -16,7 +16,7 @@ class UserRegister(Resource):
         if UserModel.find_by_username(data['username']):
             return {'message': "User already exists"}, 400
 
-        connection = sqlite3.connect('project_code/data.db')
+        connection = sqlite3.connect('app/data.db')
         cursor = connection.cursor()
 
         query = "INSERT INTO users VALUES (NULL, ?, ?)"
